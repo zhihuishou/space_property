@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo上色技术</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .method-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, background 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .method-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .method-card h2 {
+            color: #4fc3f7;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .method-card p {
+            margin-bottom: 25px;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .logo-container {
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.7);
+            transition: transform 0.2s ease;
+        }
+        
+        .color-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+            text-align: left;
+            overflow-x: auto;
+            width: 100%;
+        }
+        
+        canvas {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .method-card:nth-child(1) .color-btn:nth-child(1) { background: #ff3d00; }
+        .method-card:nth-child(1) .color-btn:nth-child(2) { background: #00c853; }
+        .method-card:nth-child(1) .color-btn:nth-child(3) { background: #2962ff; }
+        .method-card:nth-child(1) .color-btn:nth-child(4) { background: #aa00ff; }
+        
+        .method-card:nth-child(2) .color-btn:nth-child(1) { background: #ff6d00; }
+        .method-card:nth-child(2) .color-btn:nth-child(2) { background: #64dd17; }
+        .method-card:nth-child(2) .color-btn:nth-child(3) { background: #0091ea; }
+        .method-card:nth-child(2) .color-btn:nth-child(4) { background: #d500f9; }
+        
+        .method-card:nth-child(3) .color-btn:nth-child(1) { background: #ff5722; }
+        .method-card:nth-child(3) .color-btn:nth-child(2) { background: #76ff03; }
+        .method-card:nth-child(3) .color-btn:nth-child(3) { background: #2979ff; }
+        .method-card:nth-child(3) .color-btn:nth-child(4) { background: #651fff; }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: #bbbbbb;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .methods {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Logo上色技术</h1>
+            <p class="subtitle">
+                探索多种为Logo着色的前端技术方案。您可以通过点击颜色按钮或使用颜色选择器实时更改Logo颜色。
+                下方展示了三种不同的实现方法，每种方法都有其独特的应用场景和优势。
+            </p>
+        </header>
+        
+        <div class="methods">
+            <!-- 方法1: CSS滤镜 -->
+            <div class="method-card">
+                <h2>CSS滤镜技术</h2>
+                <p>使用CSS filter属性组合实现颜色变换。适用于单色Logo，通过hue-rotate调整色相，sepia和saturate增强效果。</p>
+                
+                <div class="logo-container">
+                    <div id="filter-logo" class="logo"></div>
+                </div>
+                
+                <div class="color-controls">
+                    <div class="color-btn" data-color="red"></div>
+                    <div class="color-btn" data-color="green"></div>
+                    <div class="color-btn" data-color="blue"></div>
+                    <div class="color-btn" data-color="purple"></div>
+                </div>
+                
+                <div class="code-block">
+                    .logo {<br>
+                      &nbsp;&nbsp;filter: <span id="filter-code">invert(26%) sepia(100%) saturate(2000%) hue-rotate(0deg);</span><br>
+                    }
+                </div>
+            </div>
+            
+            <!-- 方法2: 遮罩技术 -->
+            <div class="method-card">
+                <h2>遮罩技术</h2>
+                <p>使用CSS mask属性将Logo作为遮罩，通过背景颜色实现着色。此方法保留原始透明度，提供精确的颜色控制。</p>
+                
+                <div class="logo-container">
+                    <div id="mask-logo" class="logo"></div>
+                </div>
+                
+                <div class="color-controls">
+                    <div class="color-btn" data-color="orange"></div>
+                    <div class="color-btn" data-color="lime"></div>
+                    <div class="color-btn" data-color="skyblue"></div>
+                    <div class="color-btn" data-color="violet"></div>
+                </div>
+                
+                <div class="code-block">
+                    .logo {<br>
+                      &nbsp;&nbsp;background-color: <span id="mask-color-code">#FF6D00</span>;<br>
+                      &nbsp;&nbsp;-webkit-mask: url(logo) no-repeat center;<br>
+                      &nbsp;&nbsp;mask: url(logo) no-repeat center;<br>
+                    }
+                </div>
+            </div>
+            
+            <!-- 方法3: Canvas技术 -->
+            <div class="method-card">
+                <h2>Canvas动态着色</h2>
+                <p>使用Canvas API实现像素级颜色控制。最灵活的方法，支持复杂的颜色变换和动画效果。</p>
+                
+                <div class="logo-container">
+                    <canvas id="canvas-logo" width="150" height="150"></canvas>
+                </div>
+                
+                <div class="color-controls">
+                    <div class="color-btn" data-color="orangered"></div>
+                    <div class="color-btn" data-color="limegreen"></div>
+                    <div class="color-btn" data-color="dodgerblue"></div>
+                    <div class="color-btn" data-color="darkviolet"></div>
+                    <input type="color" id="custom-color" value="#FF5722" title="自定义颜色">
+                </div>
+                
+                <div class="code-block">
+                    // 使用Canvas处理图像<br>
+                    const ctx = canvas.getContext('2d');<br>
+                    ctx.drawImage(img, 0, 0);<br>
+                    const imageData = ctx.getImageData(...);<br>
+                    // 修改像素数据<br>
+                    ctx.putImageData(imageData, 0, 0);
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Logo着色技术演示 | 三种方法各有优势，根据具体需求选择合适的技术方案</p>
+        </footer>
+    </div>
+
+    <script>
+        // 提供的Base64 Logo
+        const SEAT_LOGO = "data:image/png;base64,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";
